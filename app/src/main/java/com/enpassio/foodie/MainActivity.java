@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.enpassio.foodie.model.Ingredient;
@@ -28,10 +29,10 @@ import okhttp3.Response;
  */
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtString;
     public String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
-    private Handler mHandler;
+    TextView txtString;
     String myresponse;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         * https://stackoverflow.com/a/33427922/5770629
         */
         mHandler = new Handler(Looper.getMainLooper());
-        txtString = (TextView) findViewById(R.id.txtString);
+        txtString = (TextView) findViewById(R.id.text);
 
         try {
             run();
@@ -99,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call call, IOException e) {
-                call.cancel();
+                Log.v("my_tag", "onFailureCalled inside MAinActivity");
+
+                call.request();
             }
         });
 
