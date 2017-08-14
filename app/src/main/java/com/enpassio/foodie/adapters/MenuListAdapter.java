@@ -2,6 +2,7 @@ package com.enpassio.foodie.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,15 +25,15 @@ import java.util.List;
 public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHolder> {
 
     /* Store a member variable for the popularMovies */
-    private static List<RecepieList> mPopularMovie;
+    private static List<RecepieList> mCurrentRecepie;
     /*check if it's two pane layout or not */
     private static boolean myBool;
     /* Store the context for easy access */
     private Context mContext;
 
     /* Pass in the popularMovies array into the constructor */
-    public MenuListAdapter(Context context, List<RecepieList> movies) {
-        mPopularMovie = movies;
+    public MenuListAdapter(Context context, List<RecepieList> recepieLists) {
+        mCurrentRecepie = recepieLists;
         mContext = context;
     }
 
@@ -57,25 +58,24 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     @Override
     public void onBindViewHolder(MenuListAdapter.ViewHolder viewHolder, int position) {
         /* Get the data model based on position */
-        RecepieList currentMovie = mPopularMovie.get(position);
+        RecepieList currentMovie = mCurrentRecepie.get(position);
         /*
         Set item views based on your views and data model
          */
         viewHolder.menuItemTextView.setText(currentMovie.getName());
         Log.v("my_tag", "name is : " + currentMovie.getName());
-//        Picasso.with(getContext())
-//                .load(currentMovie.getImage())
-//                .placeholder(R.mipmap.ic_launcher)
-//                .into(viewHolder.menuItemImageView);
     }
 
     @Override
     public int getItemCount() {
-        return mPopularMovie.size();
+        return mCurrentRecepie.size();
     }
 
     public void setMovieData(List<RecepieList> movieData) {
-        mPopularMovie = movieData;
+        mCurrentRecepie = movieData;
+
+
+
         notifyDataSetChanged();
     }
 
@@ -118,11 +118,14 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         public void onClick(View view) {
             int position = getAdapterPosition(); // gets item position
             if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                RecepieList currentMovie = mPopularMovie.get(position);
+                RecepieList currentMovie = mCurrentRecepie.get(position);
                 Intent itemDetailsIntent = new Intent(context, ItemDetailsActivity.class);
-                itemDetailsIntent.putParcelableArrayListExtra("myIngredients", (ArrayList) currentMovie.getIngredients());
-                itemDetailsIntent.putParcelableArrayListExtra("mySteps", (ArrayList) currentMovie.getSteps());
-                itemDetailsIntent.putExtra("myServings", currentMovie.getServings());
+                Bundle itemDetailsBundle = new Bundle();
+                itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentMovie.getIngredients());
+                itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentMovie.getSteps());
+                itemDetailsBundle.putString("myServings", String.valueOf(currentMovie.getServings()));
+
+                itemDetailsIntent.putExtra("itemDetailsBundle", itemDetailsBundle);
                 context.startActivity(itemDetailsIntent);
             }
         }

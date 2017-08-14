@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         * https://stackoverflow.com/a/33427922/5770629
         */
         mHandler = new Handler(Looper.getMainLooper());
-        txtString = (TextView) findViewById(R.id.text);
+        // txtString = (TextView) findViewById(R.id.text);
 
         try {
             run();
@@ -87,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
                     myresponse+="......."+"\n";
                 }
 
-
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        txtString.setText(myresponse);
-                    }
-                });
+// referenced from the link: https://stackoverflow.com/a/27810921/5770629
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        txtString.setText(myresponse);
+//                    }
+//                });
 
 
             }

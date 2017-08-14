@@ -39,6 +39,7 @@ public class MenuFragment extends Fragment {
     static String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     RecyclerView mMenuRecyclerView;
     MenuListAdapter menuListAdapter;
+    List<RecepieList> posts;
 
     public MenuFragment() {
         //necessary empty constructor
@@ -56,8 +57,8 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         /* Inflate the layout for this fragment */
-        View rootView = inflater.inflate(R.layout.fragment_menu_activity, container, false);
-        mMenuRecyclerView = (RecyclerView) rootView.findViewById(R.id.menuListRecyclerView);
+        View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
+        mMenuRecyclerView = rootView.findViewById(R.id.menuListRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         mMenuRecyclerView.setLayoutManager(layoutManager);
@@ -68,7 +69,8 @@ public class MenuFragment extends Fragment {
             e.printStackTrace();
         }
 
-        mMenuRecyclerView.setAdapter(new MenuListAdapter(getContext(), new ArrayList<RecepieList>()));
+        menuListAdapter = new MenuListAdapter(getContext(), new ArrayList<RecepieList>());
+        mMenuRecyclerView.setAdapter(menuListAdapter);
         return rootView;
 
     }
@@ -90,11 +92,22 @@ public class MenuFragment extends Fragment {
 
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
-                List<RecepieList> posts = new ArrayList<RecepieList>();
+                posts = new ArrayList<RecepieList>();
                 //Instruct GSON to parse as a Post array (which we convert into a list)
                 posts = Arrays.asList(gson.fromJson(loadJSONFromAsset(), RecepieList[].class));
                 Log.v("my_tag", "ArrayList is: " + posts.toString());
-                menuListAdapter.setMovieData((ArrayList<RecepieList>) posts);
+
+                //referenced from the @link: https://stackoverflow.com/a/14978267/5770629
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+
+                        menuListAdapter.setMovieData(posts);
+                    }
+                });
+
+
             }
 
             @Override
