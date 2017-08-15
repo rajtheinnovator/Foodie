@@ -46,9 +46,16 @@ public class StepsFragment extends Fragment {
     private static MediaSessionCompat mMediaSession;
     Context context;
     Bundle bundle;
+    ArrayList<Step> stepArrayList;
+    Step step;
+    /**
+     * referenced from the @link:
+     * https://github.com/udacity/AdvancedAndroid_ClassicalMusicQuiz/blob/TMED.06-Solution-AddMediaButtonReceiver/app/src/main/java/com/example/android/classicalmusicquiz/QuizActivity.java
+     */
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private PlaybackStateCompat.Builder mStateBuilder;
+    private long mSeekBar;
 
     public StepsFragment() {
         //required empty constructor
@@ -58,7 +65,9 @@ public class StepsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-
+        context = getContext();
+        stepArrayList = bundle.getParcelableArrayList("mySteps");
+        step = stepArrayList.get(bundle.getInt("position"));
     }
 
     @Nullable
@@ -66,18 +75,17 @@ public class StepsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
                 /* Inflate the layout for this fragment */
         View rootView = inflater.inflate(steps, container, false);
+
+        if (savedInstanceState != null) {
+            mSeekBar = savedInstanceState.getLong("mSeekBar");
+            mExoPlayer.seekTo(mSeekBar);
+        } else {
+            mSeekBar = 0;
+        }
         TextView shortDescription = rootView.findViewById(R.id.shortDescription);
         TextView description = rootView.findViewById(R.id.description);
         mPlayerView = rootView.findViewById(R.id.player);
-
-        context = getContext();
-        ArrayList<Step> steps = bundle.getParcelableArrayList("mySteps");
-        Step step = steps.get(bundle.getInt("position"));
-
-        shortDescription.setText(step.getShortDescription());
-        description.setText(step.getDescription());
-
-        if (step.getVideoURL() != null && !step.getVideoURL().isEmpty() && !step.getVideoURL().equals("")) {
+        if ((step.getVideoURL() != null && !step.getVideoURL().isEmpty() && !step.getVideoURL().equals(""))) {
             // Initialize the Media Session.
             initializeMediaSession();
             initializePlayer(Uri.parse(step.getVideoURL()));
@@ -85,70 +93,10 @@ public class StepsFragment extends Fragment {
             mPlayerView.setVisibility(View.GONE);
         }
 
+        shortDescription.setText(step.getShortDescription());
+        description.setText(step.getDescription());
+        mPlayerView.setPlayer(mExoPlayer);
         return rootView;
-    }
-
-    /**
-     * Initialize ExoPlayer.
-     *
-     * @param mediaUri The URI of the sample to play.
-     */
-    private void initializePlayer(Uri mediaUri) {
-        if (mExoPlayer == null) {
-
-            TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
-            mPlayerView.setPlayer(mExoPlayer);
-
-            // Set the ExoPlayer.EventListener to this activity.
-            mExoPlayer.addListener(new ExoPlayer.EventListener() {
-                @Override
-                public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-                }
-
-                @Override
-                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-                }
-
-                @Override
-                public void onLoadingChanged(boolean isLoading) {
-
-                }
-
-                @Override
-                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                    if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
-                        mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
-                                mExoPlayer.getCurrentPosition(), 1f);
-                    } else if ((playbackState == ExoPlayer.STATE_READY)) {
-                        mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
-                                mExoPlayer.getCurrentPosition(), 1f);
-                    }
-                    mMediaSession.setPlaybackState(mStateBuilder.build());
-
-                }
-
-                @Override
-                public void onPlayerError(ExoPlaybackException error) {
-
-                }
-
-                @Override
-                public void onPositionDiscontinuity() {
-
-                }
-            });
-
-            // Prepare the MediaSource.
-            String userAgent = Util.getUserAgent(context, "StepsFragment");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    context, userAgent), new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
-        }
     }
 
     /**
@@ -188,14 +136,75 @@ public class StepsFragment extends Fragment {
     }
 
     /**
-     * Release the player when the activity is destroyed.
+     * Initialize ExoPlayer.
+     *
+     * @param mediaUri The URI of the sample to play.
      */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-        mMediaSession.setActive(false);
+    private void initializePlayer(Uri mediaUri) {
+        if (mExoPlayer == null) {
+            // Create an instance of the ExoPlayer.
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
+            mPlayerView.setPlayer(mExoPlayer);
+
+            // Set the ExoPlayer.EventListener to this activity.
+            mExoPlayer.addListener(new ExoPlayer.EventListener() {
+                @Override
+                public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+                }
+
+                @Override
+                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+                }
+
+                @Override
+                public void onLoadingChanged(boolean isLoading) {
+
+                }
+
+                /**
+                 * Method that is called when the ExoPlayer state changes. Used to update the MediaSession
+                 * PlayBackState to keep in sync, and post the media notification.
+                 *
+                 * @param playWhenReady true if ExoPlayer is playing, false if it's paused.
+                 * @param playbackState int describing the state of ExoPlayer. Can be STATE_READY, STATE_IDLE,
+                 *                      STATE_BUFFERING, or STATE_ENDED.
+                 */
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
+                        mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
+                                mExoPlayer.getCurrentPosition(), 1f);
+                    } else if ((playbackState == ExoPlayer.STATE_READY)) {
+                        mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
+                                mExoPlayer.getCurrentPosition(), 1f);
+                    }
+                    mMediaSession.setPlaybackState(mStateBuilder.build());
+                }
+
+                @Override
+                public void onPlayerError(ExoPlaybackException error) {
+
+                }
+
+                @Override
+                public void onPositionDiscontinuity() {
+
+                }
+            });
+
+            // Prepare the MediaSource.
+            String userAgent = Util.getUserAgent(context, "StepsFragment");
+            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                    context, userAgent), new DefaultExtractorsFactory(), null, null);
+            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.setPlayWhenReady(true);
+        }
     }
+
 
     /**
      * Release ExoPlayer.
@@ -204,8 +213,44 @@ public class StepsFragment extends Fragment {
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
+
     }
 
+    /**
+     * Release the player when the fragment is paused
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer != null) {
+            mSeekBar = mExoPlayer.getCurrentPosition();
+            releasePlayer();
+        }
+        mMediaSession.setActive(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMediaSession.setActive(true);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mMediaSession.setActive(false);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("mSeekBar", mSeekBar);
+    }
+
+
+    /**
+     * Media Session Callbacks, where all external clients control the player.
+     */
     private class MySessionCallback extends MediaSessionCompat.Callback {
         @Override
         public void onPlay() {
@@ -222,6 +267,4 @@ public class StepsFragment extends Fragment {
             mExoPlayer.seekTo(0);
         }
     }
-
-
 }
