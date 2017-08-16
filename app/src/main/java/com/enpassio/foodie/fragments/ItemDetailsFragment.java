@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,7 +26,7 @@ public class ItemDetailsFragment extends Fragment {
 
 
     StepsPagerAdapter adapterViewPager;
-    String s;
+    String mIngredientString;
     Bundle bundle;
 
     public ItemDetailsFragment() {
@@ -37,7 +37,8 @@ public class ItemDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        setHasOptionsMenu(true);
+        //initialize the variable mIngredientString
+        mIngredientString = "";
     }
 
     @Nullable
@@ -50,21 +51,27 @@ public class ItemDetailsFragment extends Fragment {
         List<Ingredient> ingredients = bundle.getParcelableArrayList("myIngredients");
 
         for (Ingredient ingredient : ingredients) {
-            s += ingredient.getIngredient();
+            if (!(ingredient.equals(null) || ingredient.equals("null")))
+                mIngredientString += "\u25CF" + " " + ingredient.getIngredient().trim() + "\n";
         }
-        ingredientTextView.setText(s);
+        ingredientTextView.setText(mIngredientString);
 
        /* Find and set a ViewPager so that main screen/poster screen can be inflated with different fragments */
-        ViewPager vpPager = rootView.findViewById(R.id.viewPager);
-
-
+        final ViewPager vpPager = rootView.findViewById(R.id.viewPager);
         ArrayList<Step> steps = bundle.getParcelableArrayList("mySteps");
-
         adapterViewPager = new StepsPagerAdapter(this.getChildFragmentManager());
         adapterViewPager.setPAGE_COUNT(steps.size());
-        Log.v("my_tag", "insideOncreateView ItemDetailsFragment size is: " + steps.size());
         adapterViewPager.setSteps(steps);
         vpPager.setAdapter(adapterViewPager);
+
+        vpPager.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                vpPager.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
         return rootView;
     }
 }

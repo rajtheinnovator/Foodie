@@ -35,6 +35,7 @@ import com.google.android.exoplayer2.util.Util;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
+import static android.graphics.Color.rgb;
 import static com.enpassio.foodie.R.layout.steps;
 
 /**
@@ -85,6 +86,8 @@ public class StepsFragment extends Fragment {
         TextView shortDescription = rootView.findViewById(R.id.shortDescription);
         TextView description = rootView.findViewById(R.id.description);
         mPlayerView = rootView.findViewById(R.id.player);
+        rootView.findViewById(R.id.stepsCardView).setBackgroundColor(rgb(191, 216, 89));
+        rootView.findViewById(R.id.stepsLinearLayout).setBackgroundColor(rgb(191, 216, 89));
         if ((step.getVideoURL() != null && !step.getVideoURL().isEmpty() && !step.getVideoURL().equals(""))) {
             // Initialize the Media Session.
             initializeMediaSession();

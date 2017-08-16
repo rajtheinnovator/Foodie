@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,9 @@ import android.widget.TextView;
 
 import com.enpassio.foodie.ItemDetailsActivity;
 import com.enpassio.foodie.R;
+import com.enpassio.foodie.model.MenuImages;
 import com.enpassio.foodie.model.RecepieList;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,12 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         Set item views based on your views and data model
          */
         viewHolder.menuItemTextView.setText(currentMovie.getName());
-        Log.v("my_tag", "name is : " + currentMovie.getName());
+        ArrayList<String> allImageUrls = MenuImages.getMenuImages();
+        String imageUrl = allImageUrls.get(position);
+        Picasso.with(mContext)
+                .load(imageUrl)
+                .into(viewHolder.menuItemImageView);
+
     }
 
     @Override
@@ -71,8 +77,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         return mCurrentRecepie.size();
     }
 
-    public void setMovieData(List<RecepieList> movieData) {
-        mCurrentRecepie = movieData;
+    public void setRecipeData(List<RecepieList> recipeData) {
+        mCurrentRecepie = recipeData;
 
 
 

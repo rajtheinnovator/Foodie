@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,9 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static android.util.Log.v;
+/* referenced from the
+ * @link: http://www.journaldev.com/13629/okhttp-android-example-tutorial
+ */
 
 /**
  * Created by ABHISHEK RAJ on 8/13/2017.
@@ -39,7 +39,9 @@ public class MenuFragment extends Fragment {
     static String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     RecyclerView mMenuRecyclerView;
     MenuListAdapter menuListAdapter;
-    List<RecepieList> posts;
+    List<RecepieList> recepieLists;
+    ArrayList<RecepieList> recepieListArrayList;
+
 
     public MenuFragment() {
         //necessary empty constructor
@@ -58,6 +60,11 @@ public class MenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         /* Inflate the layout for this fragment */
         View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
+        if (savedInstanceState != null) {
+            recepieListArrayList = savedInstanceState.getParcelableArrayList("recepieListArrayList");
+        } else {
+            recepieListArrayList = new ArrayList<>();
+        }
         mMenuRecyclerView = rootView.findViewById(R.id.menuListRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
@@ -69,10 +76,16 @@ public class MenuFragment extends Fragment {
             e.printStackTrace();
         }
 
-        menuListAdapter = new MenuListAdapter(getContext(), new ArrayList<RecepieList>());
+        menuListAdapter = new MenuListAdapter(getContext(), recepieListArrayList);
         mMenuRecyclerView.setAdapter(menuListAdapter);
         return rootView;
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("recepieListArrayList", recepieListArrayList);
     }
 
     void run() throws IOException {
@@ -88,49 +101,55 @@ public class MenuFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                final String myJSONResponseFromServer = response.body().string();
-
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
-                posts = new ArrayList<RecepieList>();
+                recepieLists = new ArrayList<RecepieList>();
                 //Instruct GSON to parse as a Post array (which we convert into a list)
-                posts = Arrays.asList(gson.fromJson(loadJSONFromAsset(), RecepieList[].class));
-                Log.v("my_tag", "ArrayList is: " + posts.toString());
+                recepieLists = Arrays.asList(gson.fromJson(loadJSONFromAsset(), RecepieList[].class));
 
+                for (RecepieList recepieList : recepieLists) {
+                    recepieListArrayList.add(recepieList);
+                }
                 //referenced from the @link: https://stackoverflow.com/a/14978267/5770629
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         // TODO Auto-generated method stub
 
-                        menuListAdapter.setMovieData(posts);
+                        menuListAdapter.setRecipeData(recepieLists);
                     }
                 });
-
-
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
-                v("my_tag", "onFailure called with url " + call.request().url());
-                v("my_tag", "exception is: " + e.toString());
-                // final String myJSONResponseFromServer = response.body().string();
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                Gson gson = gsonBuilder.create();
-                List<RecepieList> posts;
-                //Instruct GSON to parse as a Post array (which we convert into a list)
-                posts = Arrays.asList(gson.fromJson(loadJSONFromAsset(), RecepieList[].class));
-                Log.v("my_tag", "ArrayList is: " + posts.toString());
-                Log.v("my_tag", "loadJSONFromAsset is :" + loadJSONFromAsset());
+                /** if there is failure due to Udacity server being down(as it was
+                 *  during the development of the app), then load from the JSON
+                 *  And so in that case,
+                 *
+                 *  NOTE:
+                 *         ********************************
+                 *      ***                                 ***
+                 *  ********** uncomment the line below **********
+                 *     ***                                  ***
+                 *        **********************************
+                 */
 
-
-                menuListAdapter = new MenuListAdapter(getContext(), posts);
-                menuListAdapter.setMovieData(posts);
-
-
+                // loadFromAsset(call, e);
+                call.cancel();
             }
         });
 
+    }
+
+    private void loadFromAsset(Call call, Exception e) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        List<RecepieList> posts;
+        //Instruct GSON to parse as a Post array (which we convert into a list)
+        posts = Arrays.asList(gson.fromJson(loadJSONFromAsset(), RecepieList[].class));
+        menuListAdapter = new MenuListAdapter(getContext(), posts);
+        menuListAdapter.setRecipeData(posts);
     }
 
     public String loadJSONFromAsset() {
