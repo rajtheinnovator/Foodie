@@ -1,5 +1,6 @@
 package com.enpassio.foodie.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -41,6 +42,10 @@ public class MenuFragment extends Fragment {
     MenuListAdapter menuListAdapter;
     List<RecepieList> recepieLists;
     ArrayList<RecepieList> recepieListArrayList;
+    Context mContext;
+    private boolean mTwoPane;
+
+
 
 
     public MenuFragment() {
@@ -51,6 +56,7 @@ public class MenuFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mContext = getContext();
         /* set that it has a menu */
         setHasOptionsMenu(true);
     }
@@ -60,6 +66,7 @@ public class MenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         /* Inflate the layout for this fragment */
         View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
+
         if (savedInstanceState != null) {
             recepieListArrayList = savedInstanceState.getParcelableArrayList("recepieListArrayList");
         } else {
@@ -78,6 +85,11 @@ public class MenuFragment extends Fragment {
 
         menuListAdapter = new MenuListAdapter(getContext(), recepieListArrayList);
         mMenuRecyclerView.setAdapter(menuListAdapter);
+
+        if (rootView.findViewById(R.id.menuDetailFrame) != null) {
+            mTwoPane = true;
+
+        }
         return rootView;
 
     }
@@ -115,8 +127,8 @@ public class MenuFragment extends Fragment {
                     @Override
                     public void run() {
                         // TODO Auto-generated method stub
-
                         menuListAdapter.setRecipeData(recepieLists);
+                        menuListAdapter.setTwoPaneStatus(mTwoPane);
                     }
                 });
             }

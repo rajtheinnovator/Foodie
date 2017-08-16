@@ -7,11 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enpassio.foodie.ItemDetailsActivity;
+import com.enpassio.foodie.MainActivity;
 import com.enpassio.foodie.R;
+import com.enpassio.foodie.fragments.ItemDetailsFragment;
 import com.enpassio.foodie.model.MenuImages;
 import com.enpassio.foodie.model.RecepieList;
 import com.squareup.picasso.Picasso;
@@ -29,6 +32,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     private static List<RecepieList> mCurrentRecepie;
     /*check if it's two pane layout or not */
     private static boolean myBool;
+    private static boolean mTwoPane = false;
     /* Store the context for easy access */
     private Context mContext;
 
@@ -69,6 +73,19 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         Picasso.with(mContext)
                 .load(imageUrl)
                 .into(viewHolder.menuItemImageView);
+        if (mTwoPane) {
+            ItemDetailsFragment itemDetailsFragment = new ItemDetailsFragment();
+            RecepieList currentRecipeList = mCurrentRecepie.get(0);
+            Bundle itemDetailsBundle = new Bundle();
+            itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentRecipeList.getIngredients());
+            itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentRecipeList.getSteps());
+            itemDetailsBundle.putString("myServings", String.valueOf(currentRecipeList.getServings()));
+            itemDetailsFragment.setArguments(itemDetailsBundle);
+            android.support.v4.app.FragmentManager manager = ((MainActivity) mContext).getSupportFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.menuDetailFrame, itemDetailsFragment)
+                    .commit();
+        }
 
     }
 
@@ -79,10 +96,11 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
     public void setRecipeData(List<RecepieList> recipeData) {
         mCurrentRecepie = recipeData;
-
-
-
         notifyDataSetChanged();
+    }
+
+    public void setTwoPaneStatus(boolean twoPaneStatus) {
+        mTwoPane = twoPaneStatus;
     }
 
     /*
@@ -97,6 +115,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         public final TextView menuItemTextView;
         public final ImageView menuItemImageView;
         private Context context;
+        private FrameLayout menuDetailFrame;
 
         /*
         We also create a constructor that accepts the entire item row
@@ -111,6 +130,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
             menuItemTextView = itemView.findViewById(R.id.textMenuItem);
             menuItemImageView = itemView.findViewById(R.id.imageMenuItem);
             this.context = context;
+            if (mTwoPane) {
+                menuDetailFrame = itemView.findViewById(R.id.menuDetailFrame);
+            }
             /* Attach a click listener to the entire row view */
             itemView.setOnClickListener(this);
         }
@@ -123,17 +145,33 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition(); // gets item position
-            if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                RecepieList currentMovie = mCurrentRecepie.get(position);
-                Intent itemDetailsIntent = new Intent(context, ItemDetailsActivity.class);
-                Bundle itemDetailsBundle = new Bundle();
-                itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentMovie.getIngredients());
-                itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentMovie.getSteps());
-                itemDetailsBundle.putString("myServings", String.valueOf(currentMovie.getServings()));
-
-                itemDetailsIntent.putExtra("itemDetailsBundle", itemDetailsBundle);
-                context.startActivity(itemDetailsIntent);
+            if (!mTwoPane) {
+                if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                    RecepieList currentRecipeList = mCurrentRecepie.get(position);
+                    Intent itemDetailsIntent = new Intent(context, ItemDetailsActivity.class);
+                    Bundle itemDetailsBundle = new Bundle();
+                    itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentRecipeList.getIngredients());
+                    itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentRecipeList.getSteps());
+                    itemDetailsBundle.putString("myServings", String.valueOf(currentRecipeList.getServings()));
+                    itemDetailsIntent.putExtra("itemDetailsBundle", itemDetailsBundle);
+                    context.startActivity(itemDetailsIntent);
+                }
+            } else {
+                if (position != RecyclerView.NO_POSITION) {
+                    ItemDetailsFragment itemDetailsFragment = new ItemDetailsFragment();
+                    RecepieList currentRecipeList = mCurrentRecepie.get(position);
+                    Bundle itemDetailsBundle = new Bundle();
+                    itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentRecipeList.getIngredients());
+                    itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentRecipeList.getSteps());
+                    itemDetailsBundle.putString("myServings", String.valueOf(currentRecipeList.getServings()));
+                    itemDetailsFragment.setArguments(itemDetailsBundle);
+                    android.support.v4.app.FragmentManager manager = ((MainActivity) context).getSupportFragmentManager();
+                    manager.beginTransaction()
+                            .replace(R.id.menuDetailFrame, itemDetailsFragment)
+                            .commit();
+                }
             }
+
         }
     }
 }
