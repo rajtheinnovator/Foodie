@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import com.enpassio.foodie.fragments.StepsFragment;
 import com.enpassio.foodie.model.Step;
@@ -22,6 +21,7 @@ public class StepsPagerAdapter extends FragmentPagerAdapter {
     StepsFragment stepsFragment;
     private Context context;
     private ArrayList<Step> steps;
+    private int currentPosition;
 
 
     public StepsPagerAdapter(FragmentManager fm) {
@@ -36,14 +36,18 @@ public class StepsPagerAdapter extends FragmentPagerAdapter {
         steps = step;
     }
 
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
     /* set the position of fragments */
     @Override
     public Fragment getItem(int position) {
 
+        currentPosition = position;
         stepsFragment = new StepsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);
-        Log.v("my_tag", "inside StepsPagerAdapter ItemDetailsFragment size is: " + steps.size());
         bundle.putParcelableArrayList("mySteps", steps);
         stepsFragment.setArguments(bundle);
 
@@ -54,8 +58,6 @@ public class StepsPagerAdapter extends FragmentPagerAdapter {
     /* get total fragment count for the activity */
     @Override
     public int getCount() {
-        Log.v("my_tag", "inside StepsPagerAdapter getCount size is: " + PAGE_COUNT);
-
         return PAGE_COUNT;
     }
 }
