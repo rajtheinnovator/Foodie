@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.ImageButton;
 
 import com.enpassio.foodie.fragments.StepsFragment;
 import com.enpassio.foodie.model.Step;
@@ -17,11 +18,14 @@ import java.util.ArrayList;
 
 public class StepsPagerAdapter extends FragmentPagerAdapter {
     /* Total number of pages/fragments in the MainActivity */
-    int PAGE_COUNT;
+    static int PAGE_COUNT;
     StepsFragment stepsFragment;
     private Context context;
     private ArrayList<Step> steps;
     private int currentPosition;
+    private ImageButton previousImageButton;
+    private ImageButton nextImageButton;
+    private int size;
 
 
     public StepsPagerAdapter(FragmentManager fm) {
@@ -40,19 +44,28 @@ public class StepsPagerAdapter extends FragmentPagerAdapter {
         return currentPosition;
     }
 
+    public void setImageButtonVisibility(ImageButton previousImageButton, ImageButton nextImageButton, int size) {
+        this.previousImageButton = previousImageButton;
+        this.nextImageButton = nextImageButton;
+        this.size = size;
+    }
+
     /* set the position of fragments */
     @Override
     public Fragment getItem(int position) {
-
         currentPosition = position;
         stepsFragment = new StepsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);
         bundle.putParcelableArrayList("mySteps", steps);
         stepsFragment.setArguments(bundle);
-
-
         return stepsFragment;
+    }
+
+    @Override
+    public float getPageWidth(int position) {
+        //show that there are more fragments to the right
+        return (0.95f);
     }
 
     /* get total fragment count for the activity */

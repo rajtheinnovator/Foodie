@@ -11,9 +11,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enpassio.foodie.ItemDetailsActivity;
-import com.enpassio.foodie.MainActivity;
 import com.enpassio.foodie.R;
+import com.enpassio.foodie.activities.ItemDetailsActivity;
+import com.enpassio.foodie.activities.MainActivity;
 import com.enpassio.foodie.fragments.ItemDetailsFragment;
 import com.enpassio.foodie.model.MenuImages;
 import com.enpassio.foodie.model.RecepieList;
@@ -63,11 +63,11 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     @Override
     public void onBindViewHolder(MenuListAdapter.ViewHolder viewHolder, int position) {
         /* Get the data model based on position */
-        RecepieList currentMovie = mCurrentRecepie.get(position);
+        RecepieList currentRecipeLists = mCurrentRecepie.get(position);
         /*
         Set item views based on your views and data model
          */
-        viewHolder.menuItemTextView.setText(currentMovie.getName());
+        viewHolder.menuItemTextView.setText(currentRecipeLists.getName());
         ArrayList<String> allImageUrls = MenuImages.getMenuImages();
         String imageUrl = allImageUrls.get(position);
         Picasso.with(mContext)

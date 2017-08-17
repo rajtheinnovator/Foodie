@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.enpassio.foodie.R;
@@ -26,6 +25,7 @@ import java.util.List;
 public class ItemDetailsFragment extends Fragment {
 
 
+    static ArrayList<Step> steps;
     StepsPagerAdapter adapterViewPager;
     String mIngredientString;
     Bundle bundle;
@@ -51,17 +51,16 @@ public class ItemDetailsFragment extends Fragment {
         TextView ingredientTextView = rootView.findViewById(R.id.ingredientTextView);
         List<Ingredient> ingredients = bundle.getParcelableArrayList("myIngredients");
 
+
         for (Ingredient ingredient : ingredients) {
             if (!(ingredient.equals(null) || ingredient.equals("null")))
                 mIngredientString += "\u25CF" + " " + ingredient.getIngredient().trim() + "\n";
         }
         ingredientTextView.setText(mIngredientString);
-        ImageButton previousImageButton = rootView.findViewById(R.id.prevImageButton);
-        ImageButton nextImageButton = rootView.findViewById(R.id.nextImageButton);
 
        /* Find and set a ViewPager so that main screen/poster screen can be inflated with different fragments */
         final ViewPager viewPager = rootView.findViewById(R.id.viewPager);
-        ArrayList<Step> steps = bundle.getParcelableArrayList("mySteps");
+        steps = bundle.getParcelableArrayList("mySteps");
         adapterViewPager = new StepsPagerAdapter(this.getChildFragmentManager());
         adapterViewPager.setPAGE_COUNT(steps.size());
         adapterViewPager.setSteps(steps);
@@ -70,9 +69,11 @@ public class ItemDetailsFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 viewPager.getParent().requestDisallowInterceptTouchEvent(true);
+
                 return false;
             }
         });
         return rootView;
     }
+
 }
