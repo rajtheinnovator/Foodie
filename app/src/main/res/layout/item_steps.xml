@@ -24,17 +24,29 @@
             android:maxLines="1"
             android:padding="@dimen/padding_2dp" />
 
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:id="@+id/player"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/exo_player_height"
-            android:background="@color/menu_details_frame_background"
-            android:paddingRight="@dimen/padding_2dp"
-            android:visibility="visible"
-            app:fastforward_increment="30000"
-            app:resize_mode="fill"
-            app:rewind_increment="30000" />
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/stepsThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="208dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop" />
+
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/player"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/exo_player_height"
+                android:background="@color/menu_details_frame_background"
+                android:paddingRight="@dimen/padding_2dp"
+                android:visibility="visible"
+                app:fastforward_increment="30000"
+                app:resize_mode="fill"
+                app:rewind_increment="30000" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/description"

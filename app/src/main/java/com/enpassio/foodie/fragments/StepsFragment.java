@@ -10,6 +10,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enpassio.foodie.R;
@@ -31,6 +32,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -88,15 +90,23 @@ public class StepsFragment extends Fragment {
         }
         TextView shortDescription = rootView.findViewById(R.id.shortDescription);
         TextView description = rootView.findViewById(R.id.description);
+        ImageView stepsThumbnail = rootView.findViewById(R.id.stepsThumbnail);
         mPlayerView = rootView.findViewById(R.id.player);
         rootView.findViewById(R.id.stepsCardView).setBackgroundColor(rgb(191, 216, 89));
         rootView.findViewById(R.id.stepsLinearLayout).setBackgroundColor(rgb(191, 216, 89));
+        //Log.v("my_tag", "url is :" + step.getThumbnailURL().toString());
         if ((step.getVideoURL() != null && !step.getVideoURL().isEmpty() && !step.getVideoURL().equals(""))) {
+            mPlayerView.setVisibility(View.VISIBLE);
             // Initialize the Media Session.
             initializeMediaSession();
             initializePlayer(Uri.parse(step.getVideoURL()));
-        } else {
+
+        } else if (!step.getThumbnailURL().isEmpty()) {
             mPlayerView.setVisibility(View.GONE);
+            Picasso.with(context)
+                    .load(step.getThumbnailURL())
+                    .placeholder(R.drawable.fruits)
+                    .into(stepsThumbnail);
         }
 
         shortDescription.setText(step.getShortDescription());
