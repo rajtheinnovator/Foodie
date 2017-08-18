@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,8 +45,6 @@ public class MenuFragment extends Fragment {
     ArrayList<RecepieList> recepieListArrayList;
     Context mContext;
     private boolean mTwoPane;
-
-
 
 
     public MenuFragment() {
@@ -114,12 +111,11 @@ public class MenuFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
                 recepieLists = new ArrayList<RecepieList>();
                 //Instruct GSON to parse as a Post array (which we convert into a list)
-                recepieLists = Arrays.asList(gson.fromJson(loadJSONFromAsset(), RecepieList[].class));
+                recepieLists = Arrays.asList(gson.fromJson(response.body().toString(), RecepieList[].class));
 
                 for (RecepieList recepieList : recepieLists) {
                     recepieListArrayList.add(recepieList);
@@ -137,48 +133,11 @@ public class MenuFragment extends Fragment {
 
             @Override
             public void onFailure(Call call, IOException e) {
-                /** if there is failure due to Udacity server being down(as it was
-                 *  during the development of the app), then load from the JSON
-                 *  And so in that case,
-                 *
-                 *  NOTE:
-                 *         ********************************
-                 *      ***                                 ***
-                 *  ********** uncomment the line below **********
-                 *     ***                                  ***
-                 *        **********************************
-                 */
-
-                // loadFromAsset(call, e);
                 call.cancel();
             }
         });
 
     }
 
-    private void loadFromAsset(Call call, Exception e) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-        List<RecepieList> posts;
-        //Instruct GSON to parse as a Post array (which we convert into a list)
-        posts = Arrays.asList(gson.fromJson(loadJSONFromAsset(), RecepieList[].class));
-        menuListAdapter = new MenuListAdapter(getContext(), posts);
-        menuListAdapter.setRecipeData(posts);
-    }
 
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = getActivity().getAssets().open("jsondata.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
 }

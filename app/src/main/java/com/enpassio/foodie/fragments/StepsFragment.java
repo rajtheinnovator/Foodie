@@ -62,6 +62,7 @@ public class StepsFragment extends Fragment {
     private SimpleExoPlayerView mPlayerView;
     private PlaybackStateCompat.Builder mStateBuilder;
     private long mSeekBar;
+    private String videoUrlString;
 
     public StepsFragment() {
         //required empty constructor
@@ -84,7 +85,6 @@ public class StepsFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mSeekBar = savedInstanceState.getLong(SEEKBAR_KEY);
-            mExoPlayer.seekTo(mSeekBar);
         } else {
             mSeekBar = 0;
         }
@@ -94,12 +94,12 @@ public class StepsFragment extends Fragment {
         mPlayerView = rootView.findViewById(R.id.player);
         rootView.findViewById(R.id.stepsCardView).setBackgroundColor(rgb(191, 216, 89));
         rootView.findViewById(R.id.stepsLinearLayout).setBackgroundColor(rgb(191, 216, 89));
-        //Log.v("my_tag", "url is :" + step.getThumbnailURL().toString());
         if ((step.getVideoURL() != null && !step.getVideoURL().isEmpty() && !step.getVideoURL().equals(""))) {
             mPlayerView.setVisibility(View.VISIBLE);
             // Initialize the Media Session.
             initializeMediaSession();
-            initializePlayer(Uri.parse(step.getVideoURL()));
+            videoUrlString = step.getVideoURL();
+            initializePlayer(Uri.parse(videoUrlString));
 
         } else if (!step.getThumbnailURL().isEmpty()) {
             mPlayerView.setVisibility(View.GONE);
@@ -219,6 +219,7 @@ public class StepsFragment extends Fragment {
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
         }
+        mExoPlayer.seekTo(mSeekBar);
     }
 
 
@@ -261,6 +262,7 @@ public class StepsFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(SEEKBAR_KEY, mSeekBar);
+        outState.putString("videoUrlString", videoUrlString);
     }
 
 
