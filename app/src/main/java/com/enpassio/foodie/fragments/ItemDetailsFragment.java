@@ -18,6 +18,9 @@ import com.enpassio.foodie.model.Step;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.enpassio.foodie.util.Constants.MY_INGREDIENT_ARRAYLIST__KEY;
+import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
+
 /**
  * Created by ABHISHEK RAJ on 8/14/2017.
  */
@@ -49,7 +52,7 @@ public class ItemDetailsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_item_details, container, false);
 
         TextView ingredientTextView = rootView.findViewById(R.id.ingredientTextView);
-        List<Ingredient> ingredients = bundle.getParcelableArrayList("myIngredients");
+        List<Ingredient> ingredients = bundle.getParcelableArrayList(MY_INGREDIENT_ARRAYLIST__KEY);
 
 
         for (Ingredient ingredient : ingredients) {
@@ -60,7 +63,7 @@ public class ItemDetailsFragment extends Fragment {
 
        /* Find and set a ViewPager so that main screen/poster screen can be inflated with different fragments */
         final ViewPager viewPager = rootView.findViewById(R.id.viewPager);
-        steps = bundle.getParcelableArrayList("mySteps");
+        steps = bundle.getParcelableArrayList(MY_STEPS_ARRAYLIST_KEY);
         adapterViewPager = new StepsPagerAdapter(this.getChildFragmentManager());
         adapterViewPager.setPAGE_COUNT(steps.size());
         adapterViewPager.setSteps(steps);

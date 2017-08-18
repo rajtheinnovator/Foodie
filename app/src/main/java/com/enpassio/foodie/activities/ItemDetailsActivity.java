@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.enpassio.foodie.R;
 import com.enpassio.foodie.fragments.ItemDetailsFragment;
 
+import static com.enpassio.foodie.util.Constants.ITEMS_DETAILS_BUNDLE_KEY;
+
 /**
  * Created by ABHISHEK RAJ on 8/14/2017.
  */
@@ -17,7 +19,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         /* Set the content of the activity to use the activity_main.xml layout file */
         setContentView(R.layout.activity_item_detail);
-        Bundle bundle = getIntent().getBundleExtra("itemDetailsBundle");
+        Bundle bundle = getIntent().getBundleExtra(ITEMS_DETAILS_BUNDLE_KEY);
 
         if (savedInstanceState == null) {
             ItemDetailsFragment itemDetailsFragment = new ItemDetailsFragment();

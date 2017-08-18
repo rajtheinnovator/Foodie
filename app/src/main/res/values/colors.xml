@@ -3,4 +3,10 @@
     <color name="colorPrimary">#c4d956</color>
     <color name="colorPrimaryDark">#91a822</color>
     <color name="colorAccent">#f9ff87</color>
+    <color name="exo_positiontext_view_color">#FFBEBEBE</color>
+    <color name="exo_duration_text_view_color">#FFBEBEBE</color>
+    <color name="text_color_black">#000000</color>
+    <color name="menu_details_frame_background">#8ca727</color>
+    <color name="item_menu_linear_layout_background">#f4ff8a</color>
+    <color name="steps_linear_layout_background">#bfd859</color>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="exo_palback_left_padding">4dp</dimen>
+    <dimen name="exo_palback_right_padding">4dp</dimen>
+    <dimen name="exo_position_text_view_size">14sp</dimen>
+    <dimen name="exo_duration_text_view_size">14sp</dimen>
+    <dimen name="ingredient_container_height">200dp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="padding_2dp">2dp</dimen>
+    <dimen name="padding_4dp">4dp</dimen>
+    <dimen name="text_menu_item_text_size">24sp</dimen>
+    <dimen name="text_menu_item_text_padding">8dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="menu_item_image_height">180dp</dimen>
+    <dimen name="exo_player_height">208dp</dimen>
+
+</resources>

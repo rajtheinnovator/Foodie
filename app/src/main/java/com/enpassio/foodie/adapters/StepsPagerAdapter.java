@@ -12,6 +12,9 @@ import com.enpassio.foodie.model.Step;
 
 import java.util.ArrayList;
 
+import static com.enpassio.foodie.util.Constants.MY_POSITION_KEY;
+import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
+
 /**
  * Created by ABHISHEK RAJ on 8/14/2017.
  */
@@ -56,8 +59,8 @@ public class StepsPagerAdapter extends FragmentPagerAdapter {
         currentPosition = position;
         stepsFragment = new StepsFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("position", position);
-        bundle.putParcelableArrayList("mySteps", steps);
+        bundle.putInt(MY_POSITION_KEY, position);
+        bundle.putParcelableArrayList(MY_STEPS_ARRAYLIST_KEY, steps);
         stepsFragment.setArguments(bundle);
         return stepsFragment;
     }

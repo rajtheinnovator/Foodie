@@ -50,10 +50,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:textColor="#FFBEBEBE"
-            android:textSize="14sp"
+            android:paddingLeft="@dimen/exo_palback_left_padding"
+            android:paddingRight="@dimen/exo_palback_right_padding"
+            android:textColor="@color/exo_positiontext_view_color"
+            android:textSize="@dimen/exo_position_text_view_size"
             android:textStyle="bold" />
 
         <SeekBar
@@ -69,10 +69,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:textColor="#FFBEBEBE"
-            android:textSize="14sp"
+            android:paddingLeft="@dimen/exo_palback_left_padding"
+            android:paddingRight="@dimen/exo_palback_right_padding"
+            android:textColor="@color/exo_duration_text_view_color"
+            android:textSize="@dimen/exo_duration_text_view_size"
             android:textStyle="bold" />
 
     </LinearLayout>

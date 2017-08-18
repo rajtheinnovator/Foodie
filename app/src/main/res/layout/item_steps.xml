@@ -4,17 +4,17 @@
     android:id="@+id/stepsCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#bfd859"
+    android:background="@color/steps_linear_layout_background"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:id="@+id/stepsLinearLayout"
-            android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#bfd859"
+        android:background="@color/steps_linear_layout_background"
         android:orientation="vertical"
-        android:paddingBottom="4dp">
+        android:paddingBottom="@dimen/padding_4dp">
 
         <TextView
             android:id="@+id/shortDescription"
@@ -22,17 +22,14 @@
             android:layout_height="42dp"
             android:gravity="center_horizontal|center_vertical"
             android:maxLines="1"
-            android:padding="2dp"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:padding="@dimen/padding_2dp" />
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/player"
             android:layout_width="match_parent"
-            android:layout_height="208dp"
-            android:background="#8ca727"
-            android:paddingRight="2dp"
+            android:layout_height="@dimen/exo_player_height"
+            android:background="@color/menu_details_frame_background"
+            android:paddingRight="@dimen/padding_2dp"
             android:visibility="visible"
             app:fastforward_increment="30000"
             app:resize_mode="fill"
@@ -44,9 +41,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"
-            android:padding="2dp"
-            android:textColor="#000000"
-            android:textSize="14sp" />
+            android:padding="@dimen/padding_2dp"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/exo_position_text_view_size" />
     </LinearLayout>
 
 

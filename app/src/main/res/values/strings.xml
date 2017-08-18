@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Foodie</string>
+    <string name="ingredient_header">Ingredients</string>
 </resources>

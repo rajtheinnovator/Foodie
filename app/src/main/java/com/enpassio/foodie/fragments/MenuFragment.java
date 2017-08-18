@@ -27,6 +27,8 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.enpassio.foodie.util.Constants.RECIPE_ARRAY_LIST_KEY;
 /* referenced from the
  * @link: http://www.journaldev.com/13629/okhttp-android-example-tutorial
  */
@@ -97,7 +99,7 @@ public class MenuFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("recepieListArrayList", recepieListArrayList);
+        outState.putParcelableArrayList(RECIPE_ARRAY_LIST_KEY, recepieListArrayList);
     }
 
     void run() throws IOException {

@@ -12,4 +12,18 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="vertical_text_view_style">
+        <item name="android:paddingLeft">@dimen/padding_16dp</item>
+        <item name="android:paddingRight">@dimen/padding_16dp</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">@dimen/ingredient_container_height</item>
+    </style>
+
+    <style name="short_description_text_view_style">
+        <item name="android:textSize">@dimen/text_size_16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_color_black</item>
+    </style>
 </resources>

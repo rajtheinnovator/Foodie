@@ -22,6 +22,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.enpassio.foodie.util.Constants.ITEMS_DETAILS_BUNDLE_KEY;
+import static com.enpassio.foodie.util.Constants.MY_INGREDIENT_ARRAYLIST__KEY;
+import static com.enpassio.foodie.util.Constants.MY_SERVING_KEY;
+import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
+
 /**
  * Created by ABHISHEK RAJ on 8/13/2017.
  */
@@ -77,9 +82,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
             ItemDetailsFragment itemDetailsFragment = new ItemDetailsFragment();
             RecepieList currentRecipeList = mCurrentRecepie.get(0);
             Bundle itemDetailsBundle = new Bundle();
-            itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentRecipeList.getIngredients());
-            itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentRecipeList.getSteps());
-            itemDetailsBundle.putString("myServings", String.valueOf(currentRecipeList.getServings()));
+            itemDetailsBundle.putParcelableArrayList(MY_INGREDIENT_ARRAYLIST__KEY, (ArrayList) currentRecipeList.getIngredients());
+            itemDetailsBundle.putParcelableArrayList(MY_STEPS_ARRAYLIST_KEY, (ArrayList) currentRecipeList.getSteps());
+            itemDetailsBundle.putString(MY_SERVING_KEY, String.valueOf(currentRecipeList.getServings()));
             itemDetailsFragment.setArguments(itemDetailsBundle);
             android.support.v4.app.FragmentManager manager = ((MainActivity) mContext).getSupportFragmentManager();
             manager.beginTransaction()
@@ -150,10 +155,10 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                     RecepieList currentRecipeList = mCurrentRecepie.get(position);
                     Intent itemDetailsIntent = new Intent(context, ItemDetailsActivity.class);
                     Bundle itemDetailsBundle = new Bundle();
-                    itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentRecipeList.getIngredients());
-                    itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentRecipeList.getSteps());
-                    itemDetailsBundle.putString("myServings", String.valueOf(currentRecipeList.getServings()));
-                    itemDetailsIntent.putExtra("itemDetailsBundle", itemDetailsBundle);
+                    itemDetailsBundle.putParcelableArrayList(MY_INGREDIENT_ARRAYLIST__KEY, (ArrayList) currentRecipeList.getIngredients());
+                    itemDetailsBundle.putParcelableArrayList(MY_STEPS_ARRAYLIST_KEY, (ArrayList) currentRecipeList.getSteps());
+                    itemDetailsBundle.putString(MY_SERVING_KEY, String.valueOf(currentRecipeList.getServings()));
+                    itemDetailsIntent.putExtra(ITEMS_DETAILS_BUNDLE_KEY, itemDetailsBundle);
                     context.startActivity(itemDetailsIntent);
                 }
             } else {
@@ -161,9 +166,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
                     ItemDetailsFragment itemDetailsFragment = new ItemDetailsFragment();
                     RecepieList currentRecipeList = mCurrentRecepie.get(position);
                     Bundle itemDetailsBundle = new Bundle();
-                    itemDetailsBundle.putParcelableArrayList("myIngredients", (ArrayList) currentRecipeList.getIngredients());
-                    itemDetailsBundle.putParcelableArrayList("mySteps", (ArrayList) currentRecipeList.getSteps());
-                    itemDetailsBundle.putString("myServings", String.valueOf(currentRecipeList.getServings()));
+                    itemDetailsBundle.putParcelableArrayList(MY_INGREDIENT_ARRAYLIST__KEY, (ArrayList) currentRecipeList.getIngredients());
+                    itemDetailsBundle.putParcelableArrayList(MY_STEPS_ARRAYLIST_KEY, (ArrayList) currentRecipeList.getSteps());
+                    itemDetailsBundle.putString(MY_SERVING_KEY, String.valueOf(currentRecipeList.getServings()));
                     itemDetailsFragment.setArguments(itemDetailsBundle);
                     android.support.v4.app.FragmentManager manager = ((MainActivity) context).getSupportFragmentManager();
                     manager.beginTransaction()

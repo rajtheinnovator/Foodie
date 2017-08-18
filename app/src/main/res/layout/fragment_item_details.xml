@@ -1,49 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_content_movie_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.enpassio.foodie.util.VerticalTextView
-            android:layout_width="24dp"
-            android:layout_height="200dp"
-            android:background="@color/colorPrimaryDark"
-            android:gravity="center_horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:rotation="180"
-            android:text="Ingredients"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/ingredientTextView"
+        <LinearLayout
+            android:id="@+id/ingredient_container"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:gravity="start|center_vertical"
-            android:padding="2dp"
-            android:paddingLeft="16dp"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="italic|normal" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <com.enpassio.foodie.util.VerticalTextView
+                style="@style/vertical_text_view_style"
+                android:layout_width="24dp"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center_horizontal"
+                android:rotation="180"
+                android:text="@string/ingredient_header" />
+
+            <TextView
+                android:id="@+id/ingredientTextView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ingredient_container_height"
+                android:gravity="start|center_vertical"
+                android:padding="@dimen/padding_2dp"
+                android:paddingLeft="@dimen/padding_16dp"
+                android:textColor="@color/text_color_black"
+                android:textSize="@dimen/text_size_16sp"
+                android:textStyle="italic|normal" />
+
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:background="#000"
+            android:scrollbars="horizontal" />
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:fitsSystemWindows="true"
-        android:focusable="false"
-        android:focusableInTouchMode="false" />
-
-
-</LinearLayout>
+</ScrollView>

@@ -36,7 +36,10 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 import static android.graphics.Color.rgb;
-import static com.enpassio.foodie.R.layout.steps;
+import static com.enpassio.foodie.R.layout.item_steps;
+import static com.enpassio.foodie.util.Constants.MY_POSITION_KEY;
+import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
+import static com.enpassio.foodie.util.Constants.SEEKBAR_KEY;
 
 /**
  * Created by ABHISHEK RAJ on 8/14/2017.
@@ -67,18 +70,18 @@ public class StepsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
         context = getContext();
-        stepArrayList = bundle.getParcelableArrayList("mySteps");
-        step = stepArrayList.get(bundle.getInt("position"));
+        stepArrayList = bundle.getParcelableArrayList(MY_STEPS_ARRAYLIST_KEY);
+        step = stepArrayList.get(bundle.getInt(MY_POSITION_KEY));
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
                 /* Inflate the layout for this fragment */
-        View rootView = inflater.inflate(steps, container, false);
+        View rootView = inflater.inflate(item_steps, container, false);
 
         if (savedInstanceState != null) {
-            mSeekBar = savedInstanceState.getLong("mSeekBar");
+            mSeekBar = savedInstanceState.getLong(SEEKBAR_KEY);
             mExoPlayer.seekTo(mSeekBar);
         } else {
             mSeekBar = 0;
@@ -247,7 +250,7 @@ public class StepsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong("mSeekBar", mSeekBar);
+        outState.putLong(SEEKBAR_KEY, mSeekBar);
     }
 
 
