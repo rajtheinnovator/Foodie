@@ -16,6 +16,9 @@ import com.enpassio.foodie.model.RecepieList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +47,7 @@ public class MenuFragment extends Fragment {
     List<RecepieList> recepieLists;
     ArrayList<RecepieList> recepieListArrayList;
     Context mContext;
+    JSONArray jsonArray;
     private boolean mTwoPane;
 
 
@@ -111,11 +115,24 @@ public class MenuFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
                 recepieLists = new ArrayList<RecepieList>();
-                //Instruct GSON to parse as a Post array (which we convert into a list)
-                recepieLists = Arrays.asList(gson.fromJson(response.body().toString(), RecepieList[].class));
+                /*
+                Instruct GSON to parse as a Post array (which we convert into a list)
+                */
+
+                /** code below referenced from: https://stackoverflow.com/a/29680883/5770629
+                 */
+
+                String jsonData = response.body().string();
+                try {
+                    jsonArray = new JSONArray(jsonData);
+                } catch (JSONException j) {
+                }
+
+                recepieLists = Arrays.asList(gson.fromJson(String.valueOf(jsonArray), RecepieList[].class));
 
                 for (RecepieList recepieList : recepieLists) {
                     recepieListArrayList.add(recepieList);
@@ -124,7 +141,6 @@ public class MenuFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // TODO Auto-generated method stub
                         menuListAdapter.setRecipeData(recepieLists);
                         menuListAdapter.setTwoPaneStatus(mTwoPane);
                     }
@@ -138,6 +154,4 @@ public class MenuFragment extends Fragment {
         });
 
     }
-
-
 }
