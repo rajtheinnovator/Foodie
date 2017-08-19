@@ -21,9 +21,6 @@ import java.util.List;
 import static com.enpassio.foodie.util.Constants.MY_INGREDIENT_ARRAYLIST__KEY;
 import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
 
-/**
- * Created by ABHISHEK RAJ on 8/14/2017.
- */
 
 public class ItemDetailsFragment extends Fragment {
 

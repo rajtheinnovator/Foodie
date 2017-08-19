@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.enpassio.foodie.AppWidgetConfigure">
+
+    <RadioGroup
+        android:id="@+id/containerRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="32dp">
+
+        <RadioButton
+            android:id="@+id/radioNutell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nutella Pie" />
+
+        <RadioButton
+            android:id="@+id/brownie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Brownies" />
+
+        <RadioButton
+            android:id="@+id/yellowCake"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yellow Cake" />
+
+        <RadioButton
+            android:id="@+id/cheesecake"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cheesecake" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="OK" />
+</LinearLayout>

@@ -43,9 +43,6 @@ import static com.enpassio.foodie.util.Constants.MY_POSITION_KEY;
 import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
 import static com.enpassio.foodie.util.Constants.SEEKBAR_KEY;
 
-/**
- * Created by ABHISHEK RAJ on 8/14/2017.
- */
 
 public class StepsFragment extends Fragment {
 

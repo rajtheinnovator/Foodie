@@ -1,18 +1,26 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
     android:padding="@dimen/padding_2dp">
 
     <ImageView
-        android:id="@+id/appwidget_image"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/appwidget_text"
-        android:padding="@dimen/padding_4dp"
+        android:id="@+id/recipeImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:contentDescription="Recipe image"
+        android:padding="@dimen/padding_2dp"
         android:scaleType="centerCrop"
         android:src="@drawable/fruits" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/recipeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:padding="@dimen/padding_2dp"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+</LinearLayout>

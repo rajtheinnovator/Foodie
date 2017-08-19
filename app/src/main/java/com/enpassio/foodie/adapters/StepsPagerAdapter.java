@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import static com.enpassio.foodie.util.Constants.MY_POSITION_KEY;
 import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
 
-/**
- * Created by ABHISHEK RAJ on 8/14/2017.
- */
 
 public class StepsPagerAdapter extends FragmentPagerAdapter {
     /* Total number of pages/fragments in the MainActivity */

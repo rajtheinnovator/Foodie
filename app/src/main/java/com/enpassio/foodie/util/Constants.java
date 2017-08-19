@@ -1,8 +1,5 @@
 package com.enpassio.foodie.util;
 
-/**
- * Created by ABHISHEK RAJ on 8/18/2017.
- */
 
 public class Constants {
     public static String ITEMS_DETAILS_BUNDLE_KEY = "itemDetailsBundle";

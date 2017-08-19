@@ -40,7 +40,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/exo_player_height"
                 android:paddingRight="@dimen/padding_2dp"
-                android:visibility="visible"
                 app:fastforward_increment="30000"
                 app:resize_mode="fill"
                 app:rewind_increment="30000" />

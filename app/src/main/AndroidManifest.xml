@@ -23,6 +23,11 @@
         <activity
             android:name=".activities.ItemDetailsActivity"
             android:parentActivityName=".activities.MainActivity" />
+        <activity android:name=".AppWidgetConfigure">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
         <receiver android:name=".RecipeWidget">
             <intent-filter>

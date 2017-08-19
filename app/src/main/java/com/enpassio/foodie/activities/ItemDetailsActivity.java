@@ -9,9 +9,6 @@ import com.enpassio.foodie.fragments.ItemDetailsFragment;
 
 import static com.enpassio.foodie.util.Constants.ITEMS_DETAILS_BUNDLE_KEY;
 
-/**
- * Created by ABHISHEK RAJ on 8/14/2017.
- */
 
 public class ItemDetailsActivity extends AppCompatActivity {
     @Override

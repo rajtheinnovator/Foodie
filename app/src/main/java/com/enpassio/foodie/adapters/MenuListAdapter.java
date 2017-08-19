@@ -27,9 +27,6 @@ import static com.enpassio.foodie.util.Constants.MY_INGREDIENT_ARRAYLIST__KEY;
 import static com.enpassio.foodie.util.Constants.MY_SERVING_KEY;
 import static com.enpassio.foodie.util.Constants.MY_STEPS_ARRAYLIST_KEY;
 
-/**
- * Created by ABHISHEK RAJ on 8/13/2017.
- */
 
 public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHolder> {
 
