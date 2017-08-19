@@ -4,7 +4,6 @@ import android.support.test.rule.ActivityTestRule;
 
 import com.enpassio.foodie.activities.MainActivity;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,10 +29,6 @@ public class MenuClickTest {
         return new RecyclerViewMatcher(recyclerViewId);
     }
 
-    @Before
-    public void startTheDetailsActivity() {
-
-    }
 
     //referenced from the link: https://stackoverflow.com/a/31475962/5770629
     @Test
