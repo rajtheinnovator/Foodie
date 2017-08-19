@@ -54,6 +54,7 @@ public class StepsFragment extends Fragment {
     Bundle bundle;
     ArrayList<Step> stepArrayList;
     Step step;
+    boolean isSavedInstanceNull;
     /**
      * referenced from the @link:
      * https://github.com/udacity/AdvancedAndroid_ClassicalMusicQuiz/blob/TMED.06-Solution-AddMediaButtonReceiver/app/src/main/java/com/example/android/classicalmusicquiz/QuizActivity.java
@@ -85,9 +86,12 @@ public class StepsFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mSeekBar = savedInstanceState.getLong(SEEKBAR_KEY);
+            isSavedInstanceNull = false;
         } else {
             mSeekBar = 0;
+            isSavedInstanceNull = true;
         }
+        videoUrlString = "";
         TextView shortDescription = rootView.findViewById(R.id.shortDescription);
         TextView description = rootView.findViewById(R.id.description);
         ImageView stepsThumbnail = rootView.findViewById(R.id.stepsThumbnail);
@@ -249,7 +253,12 @@ public class StepsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!isSavedInstanceNull) {
+            initializePlayer(Uri.parse(videoUrlString));
+            mExoPlayer.seekTo(mSeekBar);
+        }
         mMediaSession.setActive(true);
+
     }
 
     @Override
@@ -263,6 +272,7 @@ public class StepsFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putLong(SEEKBAR_KEY, mSeekBar);
         outState.putString("videoUrlString", videoUrlString);
+
     }
 
 

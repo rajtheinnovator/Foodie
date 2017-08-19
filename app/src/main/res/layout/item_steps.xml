@@ -39,7 +39,6 @@
                 android:id="@+id/player"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/exo_player_height"
-                android:background="@color/menu_details_frame_background"
                 android:paddingRight="@dimen/padding_2dp"
                 android:visibility="visible"
                 app:fastforward_increment="30000"
