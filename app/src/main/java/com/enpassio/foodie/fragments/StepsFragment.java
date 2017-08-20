@@ -84,6 +84,7 @@ public class StepsFragment extends Fragment {
         if (savedInstanceState != null) {
             mSeekBar = savedInstanceState.getLong(SEEKBAR_KEY);
             isSavedInstanceNull = false;
+            initializeMediaSession();
         } else {
             mSeekBar = 0;
             isSavedInstanceNull = true;
